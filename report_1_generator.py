@@ -34,8 +34,18 @@ def generate_report_one(df_processed, survey_period):
 
     # Extract round name like "第二回" from "9月(第二回)"
     # Support both full-width （） and half-width ()
-    round_name_match = re.search(r'[（\(](.*?)[）\)]', survey_period)
-    round_name = round_name_match.group(1) if round_name_match else survey_period
+    # Updated Logic for Robust Round Identification
+    if "第一回" in survey_period:
+        round_name = "第一回"
+    elif "第二回" in survey_period:
+        round_name = "第二回"
+    elif "第三回" in survey_period:
+        round_name = "第三回"
+    else:
+        # Fallback to regex if keyword search fails (for backward compatibility)
+        round_name_match = re.search(r'[（\(](.*?)[）\)]', survey_period)
+        round_name = round_name_match.group(1) if round_name_match else survey_period
+        print(f"[WARNING] Could not detect standard round name (第一回/第二回/第三回) in '{survey_period}'. Using '{round_name}'.")
     
     # Get the column mapping for the current round, or default to second round if not found
     col_map = COLUMN_MAPPING.get(round_name, COLUMN_MAPPING["第二回"])
