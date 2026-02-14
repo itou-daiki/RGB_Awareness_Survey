@@ -21,7 +21,8 @@ def normalize_text(text):
 # --- Main Generator Function ---
 # This function is designed to be flexible for different survey periods.
 def generate_report_one(df_processed, survey_period):
-    template_path = '【その１データ】 RGB意識調査の質問項目と表(職員会議用）.xlsx'
+    import os
+    template_path = os.path.join('template', '【その１データ】 RGB意識調査の質問項目と表(職員会議用）.xlsx')
 
     # Mapping for survey rounds to specific columns in the template
     # Key: Round name (e.g., "第二回"), Value: Dict of grade to column number
